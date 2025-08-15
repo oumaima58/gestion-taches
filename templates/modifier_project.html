@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Modifier un projet{% endblock %}
+
+{% block content %}
+<h2>Modifier le projet</h2>
+
+<form method="POST">
+    <div class="mb-3">
+        <label>Client</label>
+        <input list="clients" name="client" value="{{ projet.client }}" class="form-control" required>
+        <datalist id="clients">
+            {% for client in clients %}
+            <option value="{{ client }}">
+            {% endfor %}
+        </datalist>
+    </div>
+
+    <div class="mb-3">
+        <label>Tâche</label>
+        <input list="taches" name="tache" value="{{ projet.tache }}" class="form-control" required>
+        <datalist id="taches">
+            {% for tache in taches %}
+            <option value="{{ tache }}">
+            {% endfor %}
+        </datalist>
+    </div>
+
+    <div class="mb-3">
+        <label>Nom projet</label>
+        <input type="text" name="projet" value="{{ projet.projet }}" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Date réception</label>
+        <input type="date" name="date_reception" value="{{ projet.date_reception }}" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label>Réalisateur</label>
+        <input list="realisateurs" name="realisateur" value="{{ projet.realisateur }}" class="form-control">
+        <datalist id="realisateurs">
+            {% for realisateur in realisateurs %}
+            <option value="{{ realisateur }}">
+            {% endfor %}
+        </datalist>
+    </div>
+
+    <div class="mb-3">
+        <label>État</label>
+        <select name="etat" class="form-select">
+            {% for etat in etats %}
+            <option value="{{ etat }}" {% if projet.etat == etat %}selected{% endif %}>{{ etat }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Date envoi</label>
+        <input type="date" name="date_envoi" value="{{ projet.date_envoi }}" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-warning">Modifier</button>
+    <a href="/" class="btn btn-secondary">Annuler</a>
+</form>
+{% endblock %}

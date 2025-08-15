@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Connexion - Lumis Sys{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow p-4">
+            <h2 class="text-center mb-4">Connexion</h2>
+            {% if erreur %}
+            <div class="alert alert-danger">{{ erreur }}</div>
+            {% endif %}
+            <form method="post">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Nom d'utilisateur</label>
+                    <input type="text" class="form-control" name="username">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mot de passe</label>
+                    <input type="password" class="form-control" name="password">
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Se connecter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}Accueil - Gestion Fibre Optique{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 text-center" style="font-size: 2.5rem;">Bienvenue sur l'application Lumis</h2>
+
+<h2 class="mb-4 text-center">Projets du mois : {{ mois_courant_str }}</h2>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a href="/?mois={{ mois_prec }}" class="btn btn-outline-primary">&laquo; Mois précédent</a>
+    <div>
+        <a href="/export_excel?mois={{ mois_courant_param }}" class="btn btn-success">📊 Exporter en Excel</a>
+    </div>
+    <a href="/?mois={{ mois_suiv }}" class="btn btn-outline-primary">Mois suivant &raquo;</a>
+</div>
+
+<a href="/ajouter" class="btn btn-primary mb-3">➕ Ajouter un projet</a>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark text-center">
+        <tr>
+            <th>Client</th>
+            <th>Tâche</th>
+            <th>Projet</th>
+            <th>Date réception</th>
+            <th>Réalisateur</th>
+            <th>État</th>
+            <th>Date envoi</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for projet in projets %}
+        <tr>
+            <td>{{ projet.client }}</td>
+            <td>{{ projet.tache }}</td>
+            <td>{{ projet.projet }}</td>
+            <td>{{ projet.date_reception }}</td>
+            <td 
+                {% if projet.realisateur == "Yassine" %}
+                    style="background-color:#df6ecd; color:black; font-weight:bold; text-align:center;"
+                {% elif projet.realisateur == "Omar" %}
+                    style="background-color:#83c876; color:black; font-weight:bold; text-align:center;"
+                {% elif projet.realisateur == "Mohammed" %}
+                    style="background-color:#a9afc1; color:black; font-weight:bold; text-align:center;"
+                {% elif projet.realisateur == "Rajae" %}
+                    style="background-color:#ffe5a0; color:black; font-weight:bold; text-align:center;"
+                {% elif projet.realisateur == "Oumaima" %}
+                    style="background-color:#ffcfc9; color:black; font-weight:bold; text-align:center;"
+                {% else %}
+                    style="background-color:#ddd; color:black; font-weight:bold; text-align:center;"
+                {% endif %}
+            >   
+                {{ projet.realisateur }}
+            </td>
+            <td 
+                {% if projet.etat == "À faire" %}
+                    style="background-color:#fff700; color:#000000; font-weight:bold; text-align:center;"
+                {% elif projet.etat == "En cours" %}
+                    style="background-color:#00bfff; color:#000000; font-weight:bold; text-align:center;"
+                {% elif projet.etat == "Faite" %}
+                    style="background-color:#00ff00; color:#000000; font-weight:bold; text-align:center;"
+                {% elif projet.etat == "Bloqué" %}
+                    style="background-color:#ff0000; color:#000000; font-weight:bold; text-align:center;"
+                {% else %}
+                    style="background-color:#e2e3e5; color:#000000; font-weight:bold; text-align:center;"
+                {% endif %}
+            >
+                {{ projet.etat }}
+            </td>
+            <td>{{ projet.date_envoi }}</td>
+            <td>
+                <a href="/modifier/{{ projet.id }}" class="btn btn-outline-success">Modifier</a>
+                <button class="btn btn-outline-secondary" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#supprimerModal"
+                        data-href="/supprimer/{{ projet.id }}">
+                    Supprimer
+                </button>
+                <button class="btn btn-outline-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#termineModal"
+                        data-href="{{ url_for('marquer_termine', id=projet.id) }}">
+                    Terminé
+                </button>
+            </td>          
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="8" class="text-center">Aucun projet trouvé pour ce mois.</td>
+        </tr>
+        {% endfor %}
+        <div class="modal fade" id="supprimerModal" tabindex="-1" aria-labelledby="supprimerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white text-center">
+            <div class="modal-header border-0 justify-content-center">
+                <h5 class="modal-title" id="supprimerModalLabel">Supprimer ce projet ?</h5>
+            </div>
+            <div class="modal-footer justify-content-center border-0">
+                <a href="#" id="confirmSupprimer" class="btn btn-primary">Oui</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            </div>
+            </div>
+        </div>
+        </div>
+    </tbody>
+</table>
+<script>
+var supprimerModal = document.getElementById('supprimerModal')
+supprimerModal.addEventListener('show.bs.modal', function (event) {
+  var button = event.relatedTarget
+  var href = button.getAttribute('data-href')
+  var confirmBtn = document.getElementById('confirmSupprimer')
+  confirmBtn.setAttribute('href', href)
+})
+</script>
+<div class="modal fade" id="termineModal" tabindex="-1" aria-labelledby="termineModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white text-center">
+      <div class="modal-header border-0 justify-content-center">
+        <h5 class="modal-title" id="termineModalLabel">Confirmer la fin du projet</h5>
+      </div>
+      <div class="modal-footer justify-content-center border-0">
+        <a href="#" id="confirmTermine" class="btn btn-success">Oui</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+var supprimerModal = document.getElementById('supprimerModal')
+supprimerModal.addEventListener('show.bs.modal', function (event) {
+  var button = event.relatedTarget
+  var href = button.getAttribute('data-href')
+  var confirmBtn = document.getElementById('confirmSupprimer')
+  confirmBtn.setAttribute('href', href)
+})
+
+var termineModal = document.getElementById('termineModal')
+termineModal.addEventListener('show.bs.modal', function (event) {
+  var button = event.relatedTarget
+  var href = button.getAttribute('data-href')
+  var confirmBtn = document.getElementById('confirmTermine')
+  confirmBtn.setAttribute('href', href)
+})
+</script>
+
+<div class="mt-5 text-center">
+    <h3>Répartition du temps</h3>
+    <img src="{{ url_for('graph_taches', mois=mois_courant_param) }}" alt="Graphique des tâches par réalisateur" class="img-fluid" />
+</div>
+
+{% endblock %}
