@@ -26,7 +26,7 @@ env:
   BUILD_VERSION: 1.0.0
 
   # Python version to use
-  PYTHON_VERSION: 3.12.8
+  PYTHON_VERSION: 3.13
 
   # flet-cli version to install for `flet build`
   FLET_CLI_VERSION: 0.27.5
@@ -61,7 +61,7 @@ jobs:
     - name: Flet Build Web
       run: |
         echo "GITHUB_REPOSITORY: oumaima58/gestion-taches, USER: oumaima58, PROJECT_BASE_URL: gestion-taches"
-        flet build web --base-url ${GITHUB_REPOSITORY#*/} --route-url-strategy hash
+        flet build web --module-name app --base-url ${GITHUB_REPOSITORY#*/} --route-url-strategy hash
 
     - name: Upload Artifact
       uses: actions/upload-pages-artifact@v3
