@@ -60,7 +60,7 @@ jobs:
 
     - name: Flet Build Web
       run: |
-        echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}, USER: ${GITHUB_REPOSITORY%/*}, PROJECT_BASE_URL: ${GITHUB_REPOSITORY#*/}"
+        echo "GITHUB_REPOSITORY: oumaima58/gestion-taches, USER: oumaima58, PROJECT_BASE_URL: gestion-taches"
         flet build web --base-url ${GITHUB_REPOSITORY#*/} --route-url-strategy hash
 
     - name: Upload Artifact
